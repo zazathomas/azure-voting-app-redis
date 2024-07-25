@@ -36,7 +36,7 @@ pipeline {
                 }
             }
         }
-        stage("Docker Remove Image"){
+        post("Docker Remove Image"){
             steps{
                 sh(script: 'docker rmi -f zazathomas/azure-voting-app:1.0')
 
