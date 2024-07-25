@@ -2,6 +2,10 @@ pipeline {
   agent {
     label 'devsecops-box'
   }
+  environment {
+        DOCKER_PASS = credentials('DOCKER_PASS')
+        DOCKER_USER = credentials('GH_USER/PASS')
+    }
     stages{
         stage("Verify Branch"){
             steps{
@@ -36,9 +40,15 @@ pipeline {
                 }
             }
         }
+        stage("Docker Push"){
+            steps{
+                sh(script: 'echo $DOCKER_PASS docker login -u $DOCKER_USER_USR --password-stdin')
+                sh(script: 'docker push zazathomas/azure-voting-app:1.0')
+                sh(script: 'docker logout')
+            }
         stage("Run Trivy Scan"){
             steps{
-                sh(script: 'trivy --scanners vuln --severity CRITICAL --exit-code 0 image python')
+                sh(script: 'trivy --scanners vuln --severity CRITICAL --ignore-unfixed --exit-code 0 --format json --output trivy.json image python')
             }
         }}
     post {
