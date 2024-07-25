@@ -5,6 +5,7 @@ pipeline {
     environment {
             DOCKER_PASS = credentials('DOCKER_PASS')
             DOCKER_USER = credentials('GH_USER/PASS')
+            DOCKER_IMAGE = 'zazathomas/azure-voting-app:1.0'
         }
     stages{
         stage("Verify Branch"){
@@ -20,7 +21,7 @@ pipeline {
         }
         stage("Docker Build"){
             steps{
-                sh(script: 'docker build -t zazathomas/azure-voting-app:1.0 -f azure-vote/Dockerfile azure-vote/')
+                sh(script: 'docker build -t $DOCKER_IMAGE -f azure-vote/Dockerfile azure-vote/')
 
             }
         }
@@ -40,21 +41,21 @@ pipeline {
                 }
             }
         }
-        stage("Docker Push"){
+        stage("Docker Operations"){
             steps{
                 sh(script: 'echo $DOCKER_PASS | docker login -u $DOCKER_USER_USR --password-stdin')
-                sh(script: 'docker push zazathomas/azure-voting-app:1.0')
+                sh(script: 'docker push $DOCKER_IMAGE')
                 sh(script: 'docker logout')
+                sh(script: 'docker rmi -f $DOCKER_IMAGE')
             }}
         stage("Run Trivy Scan"){
             steps{
-                sh(script: 'trivy --scanners vuln --severity CRITICAL --ignore-unfixed --exit-code 0 --format json --output trivy.json image python')
+                sh(script: 'trivy image --scanners vuln --severity CRITICAL --ignore-unfixed --exit-code 0 --format json --output trivy.json $DOCKER_IMAGE')
             }
         }}
     post {
             always {
                 echo "====++++Removing Built Images++++===="
-                sh(script: 'docker rmi -f zazathomas/azure-voting-app:1.0')
             }
         }
 }
