@@ -45,7 +45,7 @@ pipeline {
                 sh(script: 'echo $DOCKER_PASS docker login -u $DOCKER_USER_USR --password-stdin')
                 sh(script: 'docker push zazathomas/azure-voting-app:1.0')
                 sh(script: 'docker logout')
-            }
+            }}
         stage("Run Trivy Scan"){
             steps{
                 sh(script: 'trivy --scanners vuln --severity CRITICAL --ignore-unfixed --exit-code 0 --format json --output trivy.json image python')
@@ -57,5 +57,4 @@ pipeline {
                 sh(script: 'docker rmi -f zazathomas/azure-voting-app:1.0')
             }
         }
-}
 }
