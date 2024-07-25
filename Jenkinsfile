@@ -42,7 +42,7 @@ pipeline {
         }
         stage("Docker Push"){
             steps{
-                sh(script: 'echo $DOCKER_PASS docker login -u $DOCKER_USER_USR --password-stdin')
+                sh(script: 'echo $DOCKER_PASS | docker login -u $DOCKER_USER_USR --password-stdin')
                 sh(script: 'docker push zazathomas/azure-voting-app:1.0')
                 sh(script: 'docker logout')
             }}
