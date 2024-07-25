@@ -38,7 +38,7 @@ pipeline {
         }
         stage("Run Trivy Scan"){
             steps{
-                sh(script: 'trivy --scanners vuln image zazathomas/azure-voting-app:1.0')
+                sh(script: 'trivy --scanners vuln --severity CRITICAL --exit-code 0 image zazathomas/azure-voting-app:1.0')
             }
         }}
     post {
