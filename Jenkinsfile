@@ -41,11 +41,6 @@ pipeline {
                 sh(script: 'trivy image zazathomas/azure-voting-app:1.0')
             }
         }
-#        stage("Docker Login"){
-#           steps{
-#                sh(script: 'echo {} | docker login -u zazathomas --password-stdin')
-#            }
-#        }
     post {
             always {
                 echo "====++++Removing Built Images++++===="
