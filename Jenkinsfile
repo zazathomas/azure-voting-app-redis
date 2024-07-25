@@ -1,11 +1,11 @@
 pipeline {
-  agent {
-    label 'devsecops-box'
-  }
-  environment {
-        DOCKER_PASS = credentials('DOCKER_PASS')
-        DOCKER_USER = credentials('GH_USER/PASS')
+    agent {
+        label 'devsecops-box'
     }
+    environment {
+            DOCKER_PASS = credentials('DOCKER_PASS')
+            DOCKER_USER = credentials('GH_USER/PASS')
+        }
     stages{
         stage("Verify Branch"){
             steps{
@@ -57,4 +57,5 @@ pipeline {
                 sh(script: 'docker rmi -f zazathomas/azure-voting-app:1.0')
             }
         }
+}
 }
