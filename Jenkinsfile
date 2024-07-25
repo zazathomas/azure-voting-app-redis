@@ -40,12 +40,11 @@ pipeline {
             steps{
                 sh(script: 'trivy image zazathomas/azure-voting-app:1.0')
             }
-        }
+        }}
     post {
             always {
                 echo "====++++Removing Built Images++++===="
                 sh(script: 'docker rmi -f zazathomas/azure-voting-app:1.0')
             }
         }
-}
 }
