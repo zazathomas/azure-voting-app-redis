@@ -36,7 +36,7 @@ pipeline {
                 }
             }
         }
-    post{
+    post {
             always {
                 sh(script: 'docker rmi -f zazathomas/azure-voting-app:1.0')
             }
