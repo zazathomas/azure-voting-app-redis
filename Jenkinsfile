@@ -2,9 +2,6 @@ pipeline {
     agent {
         label 'devsecops-box'
     }
-    environment {
-            DEFECTDOJO_TOKEN = credentials('DEFECTDOJO_TOKEN')
-        }
     stages{
         stage("Verify Branch"){
             steps{
